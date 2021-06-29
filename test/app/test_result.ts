@@ -46,18 +46,22 @@ describe("AsyncResult", () => {
 
     it("should return a result with metadata attribute when data stored in backend", done => {
       // Arrange
-      const testState = "PENDING";
-      const testResult = {state: testState, meta: {done: 1, total: 100}};
-      const asyncResult = new AsyncResult(testName, redisBackend);
+      const anId = '6666-1888';
+      const aState = "PENDING";
+      const aResult = {done: 1, total: 100};
+      const asyncResult = new AsyncResult(anId, redisBackend);
 
-      redisBackend.storeResult(testName, testResult, testState)
+      redisBackend.storeResult(anId, aResult, aState)
           .then(() => {
             // Action
             asyncResult.statusState()
                 .then((result) => {
-                  assert.equal(result.state, testState);
-                  assert.equal(result.meta.done, testResult.meta.done);
-                  assert.equal(result.meta.total, testResult.meta.total);
+                  console.log('result', result);
+                  console.log('testResult', aResult);
+
+                  assert.equal(result.state, aState);
+                  assert.equal(result.meta.done, aResult.done);
+                  assert.equal(result.meta.total, aResult.total);
                   done();
                 })
                 .catch(error => {
@@ -68,16 +72,17 @@ describe("AsyncResult", () => {
 
     it("should return a result with valid state and meta attribute when no meta stored in backend", done => {
       // Arrange
-      const testState = "PENDING";
-      const testResult = {state: testState};
-      const asyncResult = new AsyncResult(testName, redisBackend);
+      const anId = '6666-1888';
+      const aState = "PENDING";
+      const aResult = {done: 1, total: 100};
+      const asyncResult = new AsyncResult(anId, redisBackend);
 
-      redisBackend.storeResult(testName, testResult, testState)
+      redisBackend.storeResult(anId, aResult, aState)
           .then(() => {
             // Action
             asyncResult.statusState()
                 .then((result) => {
-                  assert.equal(result.state, testState);
+                  assert.equal(result.state, aState);
                   done();
                 })
                 .catch(error => {

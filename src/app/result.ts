@@ -137,12 +137,14 @@ export class AsyncResult {
 
   public statusState(): Promise<{ state: string, meta: any }> {
     return this.getTaskMeta()
-        .then((meta: any) => {
+        .then((meta: ProgressType) => {
           if (meta) {
-            return {state: meta.status, meta: meta?.result?.meta || {}};
+            return {state: meta.status, meta: meta?.result || {}};
           } else {
             return null;
           }
         });
   }
 }
+
+type ProgressType = {status: string, result: any, traceback: any, children: any[], date_done: any, task_id:string};
