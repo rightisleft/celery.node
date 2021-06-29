@@ -56,8 +56,8 @@ describe("AsyncResult", () => {
             // Action
             asyncResult.statusState()
                 .then((result) => {
-                  console.log('result', result);
-                  console.log('testResult', aResult);
+                  // console.log('result', result);
+                  // console.log('testResult', aResult);
 
                   assert.equal(result.state, aState);
                   assert.equal(result.meta.done, aResult.done);
@@ -72,9 +72,9 @@ describe("AsyncResult", () => {
 
     it("should return a result with valid state and meta attribute when no meta stored in backend", done => {
       // Arrange
-      const anId = '6666-1888';
-      const aState = "PENDING";
-      const aResult = {done: 1, total: 100};
+      const anId = '6666';
+      const aState = "FAILURE";
+      const aResult = null;
       const asyncResult = new AsyncResult(anId, redisBackend);
 
       redisBackend.storeResult(anId, aResult, aState)
@@ -82,7 +82,9 @@ describe("AsyncResult", () => {
             // Action
             asyncResult.statusState()
                 .then((result) => {
+                  // console.log('result', result);
                   assert.equal(result.state, aState);
+                  assert.isEmpty(result.meta);
                   done();
                 })
                 .catch(error => {

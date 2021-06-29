@@ -137,9 +137,10 @@ export class AsyncResult {
 
   public statusState(): Promise<{ state: string, meta: any }> {
     return this.getTaskMeta()
-        .then((meta: ProgressType) => {
-          if (meta) {
-            return {state: meta.status, meta: meta?.result || {}};
+        .then((entity: ProgressType) => {
+          if (entity) {
+            const meta = !!entity?.result ? entity.result : {};
+            return {state: entity.status, meta };
           } else {
             return null;
           }
