@@ -91,11 +91,7 @@ export default class RedisBackend implements CeleryBackend {
    * @param {*} result
    * @param {string} state
    */
-  public storeResult(
-    taskId: string,
-    result: any,
-    state: string
-  ): Promise<["OK", number]> {
+  public storeResult(taskId: string, result: any, state: string): Promise<["OK", number]> {
     return this.set(
       `${keyPrefix}${taskId}`,
       JSON.stringify({
