@@ -10,6 +10,7 @@
     "format-check": "prettier --check \"{,!(node_modules)/**/}*.{js,ts}\"",
     "dist": "tsc",
     "test": "mocha -r ts-node/register ./test/**/*",
+    "prepare": "tsc",
     "prepublishOnly": "npm run dist & npm test"
   },
   "repository": {
