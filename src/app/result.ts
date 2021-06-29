@@ -134,4 +134,15 @@ export class AsyncResult {
         }
       });
   }
+
+  public statusState(): Promise<{ state: string, meta: any }> {
+    return this.getTaskMeta()
+        .then((meta: any) => {
+          if (meta) {
+            return {state: meta.status, meta: meta?.result?.meta || {}};
+          } else {
+            return null;
+          }
+        });
+  }
 }

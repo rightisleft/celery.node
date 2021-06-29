@@ -44,6 +44,48 @@ describe("AsyncResult", () => {
         });
     });
 
+    it("should return result with metadata progress when data stored in backend", done => {
+      // Arrange
+      const testState = "PENDING";
+      const testResult = {state: testState, meta: {done: 1, total: 100}};
+      const asyncResult = new AsyncResult(testName, redisBackend);
+
+      redisBackend.storeResult(testName, testResult, testState)
+          .then(() => {
+            // Action
+            asyncResult.statusState()
+                .then((result) => {
+                  assert.equal(result.state, testState);
+                  assert.equal(result.meta.done, testResult.meta.done);
+                  assert.equal(result.meta.total, testResult.meta.total);
+                  done();
+                })
+                .catch(error => {
+                  assert.fail(error.message);
+                });
+          });
+    });
+
+    it("should return a valid state and meta result when no meta store in backend", done => {
+      // Arrange
+      const testState = "PENDING";
+      const testResult = {state: testState};
+      const asyncResult = new AsyncResult(testName, redisBackend);
+
+      redisBackend.storeResult(testName, testResult, testState)
+          .then(() => {
+            // Action
+            asyncResult.statusState()
+                .then((result) => {
+                  assert.equal(result.state, testState);
+                  done();
+                })
+                .catch(error => {
+                  assert.fail(error.message);
+                });
+          });
+    });
+
     it("should immediately resolve when the task was previously resolved", done => {
       // Arrange
       const testResult = "100";
@@ -96,7 +138,7 @@ describe("AsyncResult", () => {
     it("should throw timeout when result is not in backend", done => {
       // Arrange
       const result = new AsyncResult(testName, redisBackend);
-      
+
       // Action
       result
         .get(500)
@@ -118,7 +160,7 @@ describe("AsyncResult", () => {
       const testStatus = "FAILURE";
       const asyncResult = new AsyncResult(testName, redisBackend);
       await redisBackend.storeResult(testName, testResult, testStatus);
-      
+
       // Action
       const result = await asyncResult.result();
 
