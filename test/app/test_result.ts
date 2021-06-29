@@ -44,7 +44,7 @@ describe("AsyncResult", () => {
         });
     });
 
-    it("should return result with metadata progress when data stored in backend", done => {
+    it("should return a result with metadata attribute when data stored in backend", done => {
       // Arrange
       const testState = "PENDING";
       const testResult = {state: testState, meta: {done: 1, total: 100}};
@@ -66,7 +66,7 @@ describe("AsyncResult", () => {
           });
     });
 
-    it("should return a valid state and meta result when no meta store in backend", done => {
+    it("should return a result with valid state and meta attribute when no meta stored in backend", done => {
       // Arrange
       const testState = "PENDING";
       const testResult = {state: testState};
